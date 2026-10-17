@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shaily Gupta — Software Developer & Full Stack Engineer</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Space Grotesk, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Configuration for custom Design Tokens -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bgWarm: '#F7F7F5',
+                        graphite: '#202124',
+                        graphiteBorder: '#333438',
+                        vividOrange: '#FF5A1F',
+                        orangeHover: '#E74712',
+                        secondaryText: '#686868',
+                        lightBorder: '#E2E2DE',
+                        cardWhite: '#FFFFFF',
+                        softOrange: '#FFF0E8',
+                        mutedDarkText: '#B8B8B8'
+                    },
+                    fontFamily: {
+                        heading: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F7F7F5;
+            color: #202124;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Subtle custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F7F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D1D1CD;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF5A1F;
+        }
+
+        /* Interactive Card Hover Effects */
+        .bento-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Code highlight line animation */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+        }
+        .glow-effect {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased text-graphite selection:bg-vividOrange selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-graphite text-white px-5 py-3 rounded-xl shadow-2xl border border-graphiteBorder font-mono text-xs">
+        <i data-lucide="check-circle-2" class="w-4 h-4 text-vividOrange"></i>
+        <span id="toast-message">Copied to clipboard!</span>
+    </div>
+
+    <!-- STICKY NAVBAR -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-bgWarm/85 border-b border-lightBorder/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand -->
+            <a href="#home" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-graphite text-white font-heading font-bold flex items-center justify-center group-hover:bg-vividOrange transition-colors">
+                    SG
+                </div>
+                <span class="font-heading font-bold text-lg tracking-tight group-hover:text-vividOrange transition-colors">Shaily Gupta</span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 font-medium text-sm">
+                <a href="#about" class="text-secondaryText hover:text-graphite transition-colors">About</a>
+                <a href="#projects" class="text-secondaryText hover:text-graphite transition-colors">Projects</a>
+                <a href="#skills" class="text-secondaryText hover:text-graphite transition-colors">Skills</a>
+                <a href="#experience" class="text-secondaryText hover:text-graphite transition-colors">Experience</a>
+                <a href="#contact" class="text-secondaryText hover:text-graphite transition-colors">Contact</a>
+            </nav>
+
+            <!-- CTA & Mobile Toggle -->
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="hidden sm:inline-flex items-center gap-2 bg-vividOrange hover:bg-orangeHover text-white px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 shadow-sm shadow-vividOrange/20 hover:shadow-md hover:shadow-vividOrange/30">
+                    <span>Let's Talk</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+
+                <button id="mobile-menu-btn" aria-label="Toggle navigation menu" class="md:hidden p-2 rounded-lg border border-lightBorder text-graphite hover:bg-white transition-colors">
+                    <i data-lucide="menu" id="menu-icon" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div id="mobile-drawer" class="hidden md:hidden border-b border-lightBorder bg-cardWhite px-4 pt-3 pb-6 space-y-3">
+            <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md font-medium text-secondaryText hover:text-graphite hover:bg-bgWarm">About</a>
+            <a href="#projects" class="mobile-nav-link block px-3 py-2 rounded-md font-medium text-secondaryText hover:text-graphite hover:bg-bgWarm">Projects</a>
+            <a href="#skills" class="mobile-nav-link block px-3 py-2 rounded-md font-medium text-secondaryText hover:text-graphite hover:bg-bgWarm">Skills</a>
+            <a href="#experience" class="mobile-nav-link block px-3 py-2 rounded-md font-medium text-secondaryText hover:text-graphite hover:bg-bgWarm">Experience</a>
+            <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-md font-medium text-secondaryText hover:text-graphite hover:bg-bgWarm">Contact</a>
+            <div class="pt-2 border-t border-lightBorder">
+                <a href="#contact" class="mobile-nav-link w-full flex items-center justify-center gap-2 bg-vividOrange text-white px-4 py-2.5 rounded-lg font-medium text-sm">
+                    <span>Let's Talk</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12" id="home">
+
+        <!-- ================= HERO BENTO SECTION ================= -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            
+            <!-- Hero Main Card (Cols 8) -->
+            <div class="lg:col-span-8 bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-8 lg:p-10 flex flex-col justify-between bento-card shadow-sm hover:border-vividOrange/40">
+                <div class="space-y-6">
+                    <!-- Status & Location Row -->
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-softOrange text-vividOrange text-xs font-mono font-semibold uppercase tracking-wider border border-vividOrange/20">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                            <span>Software Developer · Mumbai, India</span>
+                        </div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-mono font-medium">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>OPEN TO INTERNSHIP OPPORTUNITIES</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Headline -->
+                    <h1 class="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-graphite leading-[1.15] tracking-tight">
+                        Building <span class="text-vividOrange underline decoration-vividOrange/30 underline-offset-8">useful</span> things for the digital world.
+                    </h1>
+
+                    <!-- Supporting Text -->
+                    <p class="text-secondaryText text-base sm:text-lg leading-relaxed max-w-2xl">
+                        I'm Shaily, a Computer Science and Engineering student focused on full-stack development, software engineering, and data-driven applications.
+                    </p>
+                </div>
+
+                <!-- Action CTAs & Socials -->
+                <div class="pt-8 flex flex-wrap items-center justify-between gap-4 border-t border-lightBorder/60 mt-8">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a href="#projects" class="inline-flex items-center gap-2 bg-graphite hover:bg-black text-white px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200">
+                            <span>Explore Projects</span>
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#contact" class="inline-flex items-center gap-2 bg-bgWarm hover:bg-lightBorder text-graphite px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 border border-lightBorder">
+                            <span>Get in Touch</span>
+                        </a>
+                    </div>
+
+                    <!-- Social Icons -->
+                    <div class="flex items-center gap-2">
+                        <a href="https://github.com/Shaily-62" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="p-2.5 rounded-xl border border-lightBorder text-graphite hover:text-vividOrange hover:border-vividOrange/50 hover:bg-softOrange/50 transition-all">
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/shaily-gupta62" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="p-2.5 rounded-xl border border-lightBorder text-graphite hover:text-vividOrange hover:border-vividOrange/50 hover:bg-softOrange/50 transition-all">
+                            <i data-lucide="linkedin" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Terminal / Quick Spec Card (Cols 4) -->
+            <div class="lg:col-span-4 bg-graphite border border-graphiteBorder rounded-2xl p-6 flex flex-col justify-between text-white bento-card relative overflow-hidden">
+                <!-- Abstract Decorative Orange Accent line -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-vividOrange/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="space-y-4 relative z-10">
+                    <div class="flex items-center justify-between border-b border-graphiteBorder pb-3">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+                        </div>
+                        <span class="font-mono text-xs text-mutedDarkText">shaily.config.js</span>
+                    </div>
+
+                    <!-- Code Preview snippet -->
+                    <div class="font-mono text-xs leading-relaxed space-y-1 text-gray-300 pt-1">
+                        <p><span class="text-vividOrange">const</span> <span class="text-blue-400">developer</span> = {</p>
+                        <p class="pl-4"><span class="text-purple-400">name</span>: <span class="text-emerald-400">'Shaily Gupta'</span>,</p>
+                        <p class="pl-4"><span class="text-purple-400">degree</span>: <span class="text-emerald-400">'B.E. CSE (Data Science)'</span>,</p>
+                        <p class="pl-4"><span class="text-purple-400">focus</span>: [<span class="text-emerald-400">'Full-Stack'</span>, <span class="text-emerald-400">'Data Science'</span>],</p>
+                        <p class="pl-4"><span class="text-purple-400">coreStack</span>: [<span class="text-emerald-400">'React'</span>, <span class="text-emerald-400">'Node'</span>, <span class="text-emerald-400">'Python'</span>],</p>
+                        <p class="pl-4"><span class="text-purple-400">graduation</span>: <span class="text-emerald-400">'May 2027'</span></p>
+                        <p>};</p>
+                    </div>
+                </div>
+
+                <!-- Mini Metrics -->
+                <div class="pt-6 border-t border-graphiteBorder grid grid-cols-2 gap-3 mt-6 relative z-10 font-mono">
+                    <div class="p-3 bg-graphiteBorder/40 rounded-xl border border-graphiteBorder/60">
+                        <span class="text-[10px] text-mutedDarkText uppercase block tracking-wider">Education</span>
+                        <span class="text-xs font-semibold text-white">B.E. CSE (DS)</span>
+                    </div>
+                    <div class="p-3 bg-graphiteBorder/40 rounded-xl border border-graphiteBorder/60">
+                        <span class="text-[10px] text-mutedDarkText uppercase block tracking-wider">Status</span>
+                        <span class="text-xs font-semibold text-vividOrange">Ready to Build</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ABOUT & EDUCATION BENTO SECTION ================= -->
+        <section id="about" class="scroll-mt-20">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="font-mono text-xs text-vividOrange uppercase font-bold tracking-widest">// 01</span>
+                <h2 class="font-heading font-bold text-2xl text-graphite">About & Education</h2>
+                <div class="h-px bg-lightBorder flex-1 ml-2"></div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <!-- Bio Card (Cols 7) -->
+                <div class="lg:col-span-7 bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-8 bento-card flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center gap-2 font-mono text-xs text-secondaryText">
+                            <i data-lucide="user" class="w-4 h-4 text-vividOrange"></i>
+                            <span>BACKGROUND</span>
+                        </div>
+                        <p class="text-graphite text-base sm:text-lg leading-relaxed">
+                            I'm a Computer Science and Engineering (Data Science) student who enjoys turning ideas into useful software. I work across frontend development, backend systems, and data-driven applications, while continuously improving my problem-solving and engineering skills.
+                        </p>
+                    </div>
+
+                    <div class="pt-6 border-t border-lightBorder/60 mt-6 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Full-Stack Development</span>
+                        <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Data Analytics</span>
+                        <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Machine Learning</span>
+                        <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">UI Architecture</span>
+                    </div>
+                </div>
+
+                <!-- Education Details (Cols 5) -->
+                <div class="lg:col-span-5 bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-8 bento-card flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="inline-flex items-center gap-2 font-mono text-xs text-vividOrange font-semibold">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            <span>ACADEMIC INSTITUTION</span>
+                        </div>
+
+                        <div>
+                            <h3 class="font-heading font-bold text-xl text-graphite">A.P. Shah Institute of Technology</h3>
+                            <p class="text-secondaryText text-sm mt-1">Bachelor of Engineering (B.E.)</p>
+                            <p class="text-graphite font-medium text-sm mt-0.5">Computer Science & Engineering (Data Science)</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-lightBorder/60 mt-6 flex items-center justify-between font-mono text-xs text-secondaryText">
+                        <div class="flex items-center gap-1.5">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5 text-vividOrange"></i>
+                            <span>Expected Graduation: <strong class="text-graphite">May 2027</strong></span>
+                        </div>
+                        <span class="px-2.5 py-1 bg-softOrange text-vividOrange rounded-md font-semibold">GPA Enrolled</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FEATURED PROJECTS SECTION ================= -->
+        <section id="projects" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs text-vividOrange uppercase font-bold tracking-widest">// 02</span>
+                    <h2 class="font-heading font-bold text-2xl text-graphite">Featured Projects</h2>
+                </div>
+                <span class="font-mono text-xs text-secondaryText hidden sm:inline-block">Built with React, Python & Modern Web Stack</span>
+            </div>
+
+            <!-- Asymmetrical Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                
+                <!-- Project 1: MindBloom (Featured - Cols 12 or Large) -->
+                <div class="lg:col-span-12 bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-8 bento-card hover:border-vividOrange/50 relative overflow-hidden group">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                        <div class="lg:col-span-7 space-y-4">
+                            <div class="flex items-center gap-3">
+                                <span class="font-mono text-xs font-bold text-vividOrange bg-softOrange px-2.5 py-1 rounded-md border border-vividOrange/20">PROJECT 01</span>
+                                <span class="font-mono text-xs text-secondaryText">Interactive Learning App</span>
+                            </div>
+
+                            <h3 class="font-heading font-bold text-2xl sm:text-3xl text-graphite group-hover:text-vividOrange transition-colors">
+                                MindBloom
+                            </h3>
+
+                            <p class="text-secondaryText text-base leading-relaxed">
+                                An interactive learning and screening application featuring child profiles, game-based activities, and parent-facing progress tracking. Designed for cognitive assessment and gamified educational experiences.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 pt-2">
+                                <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-lg border border-lightBorder">React</span>
+                                <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-lg border border-lightBorder">Vite</span>
+                                <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-lg border border-lightBorder">Phaser</span>
+                                <span class="px-3 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-lg border border-lightBorder">Supabase</span>
+                            </div>
+                        </div>
+
+                        <!-- Abstract Mock Visual -->
+                        <div class="lg:col-span-5 bg-bgWarm border border-lightBorder rounded-xl p-5 font-mono text-xs space-y-3 relative overflow-hidden">
+                            <div class="flex items-center justify-between text-secondaryText border-b border-lightBorder pb-2">
+                                <span class="flex items-center gap-1.5"><i data-lucide="sparkles" class="w-3.5 h-3.5 text-vividOrange"></i> MindBloom Core</span>
+                                <span class="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Active Session</span>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div class="p-2.5 bg-cardWhite rounded-lg border border-lightBorder flex items-center justify-between">
+                                    <span>Child Profile Screening</span>
+                                    <span class="text-vividOrange font-semibold">98.4% Sync</span>
+                                </div>
+                                <div class="p-2.5 bg-cardWhite rounded-lg border border-lightBorder flex items-center justify-between">
+                                    <span>Gamified Module Phaser.js</span>
+                                    <span class="text-emerald-600 font-semibold">60 FPS</span>
+                                </div>
+                                <div class="p-2.5 bg-cardWhite rounded-lg border border-lightBorder flex items-center justify-between">
+                                    <span>Parent Progress Tracker</span>
+                                    <span class="text-secondaryText">Supabase DB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: CareerLift (Cols 6) -->
+                <div class="lg:col-span-6 bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-8 bento-card flex flex-col justify-between group hover:border-vividOrange/50">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono text-xs font-bold text-vividOrange bg-softOrange px-2.5 py-1 rounded-md border border-vividOrange/20">PROJECT 02</span>
+                            <a href="https://github.com/Shaily-62/CareerLift" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-bgWarm hover:bg-vividOrange hover:text-white transition-all text-graphite" aria-label="CareerLift GitHub Repository">
+                                <i data-lucide="github" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+
+                        <h3 class="font-heading font-bold text-2xl text-graphite group-hover:text-vividOrange transition-colors flex items-center justify-between">
+                            CareerLift
+                            <i data-lucide="arrow-up-right" class="w-5 h-5 text-secondaryText group-hover:text-vividOrange transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                        </h3>
+
+                        <p class="text-secondaryText text-sm leading-relaxed">
+                            An AI-assisted career intelligence platform exploring career-related insights through machine learning and application workflows. Features predictive career paths and resume optimization insights.
+                        </p>
+                    </div>
+
+                    <div class="pt-6 border-t border-lightBorder/60 mt-6 space-y-4">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">React</span>
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Python</span>
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">FastAPI</span>
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Machine Learning</span>
+                        </div>
+
+                        <a href="https://github.com/Shaily-62/CareerLift" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-mono text-xs text-vividOrange font-semibold hover:underline">
+                            <span>View Source Code on GitHub</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Project 3: FinPilot (Cols 6) -->
+                <div class="lg:col-span-6 bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-8 bento-card flex flex-col justify-between group hover:border-vividOrange/50">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono text-xs font-bold text-vividOrange bg-softOrange px-2.5 py-1 rounded-md border border-vividOrange/20">PROJECT 03</span>
+                            <span class="p-2 rounded-lg bg-bgWarm text-secondaryText">
+                                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                            </span>
+                        </div>
+
+                        <h3 class="font-heading font-bold text-2xl text-graphite group-hover:text-vividOrange transition-colors">
+                            FinPilot
+                        </h3>
+
+                        <p class="text-secondaryText text-sm leading-relaxed">
+                            A fintech-oriented project involving data-driven functionality and machine learning algorithms. Utilizes Random Forest models for predictive risk evaluation and streamlined financial data analytics.
+                        </p>
+                    </div>
+
+                    <div class="pt-6 border-t border-lightBorder/60 mt-6">
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Supabase</span>
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Python</span>
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Random Forest</span>
+                            <span class="px-2.5 py-1 bg-bgWarm text-graphite font-mono text-xs rounded-md border border-lightBorder">Data Analytics</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SKILLS GRID SECTION ================= -->
+        <section id="skills" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs text-vividOrange uppercase font-bold tracking-widest">// 03</span>
+                    <h2 class="font-heading font-bold text-2xl text-graphite">Technical Capabilities</h2>
+                </div>
+                <span class="font-mono text-xs text-secondaryText hidden sm:inline-block">Clean categorization · No arbitrary percentages</span>
+            </div>
+
+            <!-- Skill Filter Buttons -->
+            <div class="flex flex-wrap gap-2 mb-6" id="skill-filters">
+                <button data-filter="all" class="skill-tab-btn active px-4 py-1.5 rounded-lg text-xs font-mono font-medium bg-graphite text-white transition-all">All Capabilities</button>
+                <button data-filter="frontend" class="skill-tab-btn px-4 py-1.5 rounded-lg text-xs font-mono font-medium bg-cardWhite text-secondaryText hover:text-graphite border border-lightBorder transition-all">Frontend</button>
+                <button data-filter="backend" class="skill-tab-btn px-4 py-1.5 rounded-lg text-xs font-mono font-medium bg-cardWhite text-secondaryText hover:text-graphite border border-lightBorder transition-all">Backend</button>
+                <button data-filter="data" class="skill-tab-btn px-4 py-1.5 rounded-lg text-xs font-mono font-medium bg-cardWhite text-secondaryText hover:text-graphite border border-lightBorder transition-all">Data & DB</button>
+                <button data-filter="cs" class="skill-tab-btn px-4 py-1.5 rounded-lg text-xs font-mono font-medium bg-cardWhite text-secondaryText hover:text-graphite border border-lightBorder transition-all">CS Fundamentals</button>
+            </div>
+
+            <!-- Skill Group Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="skills-container">
+                
+                <!-- Frontend -->
+                <div class="skill-card bg-cardWhite border border-lightBorder rounded-2xl p-6 bento-card space-y-4" data-category="frontend">
+                    <div class="flex items-center gap-2.5 text-graphite">
+                        <i data-lucide="layout" class="w-5 h-5 text-vividOrange"></i>
+                        <h3 class="font-heading font-bold text-lg">Frontend</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite flex items-center justify-between">
+                            <span>React.js</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-vividOrange"></span>
+                        </div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite flex items-center justify-between">
+                            <span>JavaScript (ES6+)</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-vividOrange"></span>
+                        </div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">HTML5</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">CSS3</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Tailwind CSS</div>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="skill-card bg-cardWhite border border-lightBorder rounded-2xl p-6 bento-card space-y-4" data-category="backend">
+                    <div class="flex items-center gap-2.5 text-graphite">
+                        <i data-lucide="server" class="w-5 h-5 text-vividOrange"></i>
+                        <h3 class="font-heading font-bold text-lg">Backend</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Node.js</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Express.js</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">REST APIs</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">JWT Authentication</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">FastAPI</div>
+                    </div>
+                </div>
+
+                <!-- Data & DB -->
+                <div class="skill-card bg-cardWhite border border-lightBorder rounded-2xl p-6 bento-card space-y-4" data-category="data">
+                    <div class="flex items-center gap-2.5 text-graphite">
+                        <i data-lucide="database" class="w-5 h-5 text-vividOrange"></i>
+                        <h3 class="font-heading font-bold text-lg">Data & Databases</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Python</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">SQL</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">MySQL</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">MongoDB</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Supabase</div>
+                    </div>
+                </div>
+
+                <!-- CS Fundamentals -->
+                <div class="skill-card bg-cardWhite border border-lightBorder rounded-2xl p-6 bento-card space-y-4" data-category="cs">
+                    <div class="flex items-center gap-2.5 text-graphite">
+                        <i data-lucide="cpu" class="w-5 h-5 text-vividOrange"></i>
+                        <h3 class="font-heading font-bold text-lg">Computer Science</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Java</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Data Structures & Algo</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Object-Oriented Programming</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">DBMS Architecture</div>
+                        <div class="p-2 bg-bgWarm rounded-lg border border-lightBorder/80 text-xs font-mono font-medium text-graphite">Operating Systems</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= BEYOND THE CODE / ACHIEVEMENTS SECTION ================= -->
+        <section id="experience" class="scroll-mt-20">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="font-mono text-xs text-vividOrange uppercase font-bold tracking-widest">// 04</span>
+                <h2 class="font-heading font-bold text-2xl text-graphite">Beyond the Code</h2>
+                <div class="h-px bg-lightBorder flex-1 ml-2"></div>
+            </div>
+
+            <div class="bg-graphite text-white rounded-2xl p-6 sm:p-8 lg:p-10 border border-graphiteBorder bento-card relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-graphiteBorder pb-6 mb-8">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2 text-vividOrange font-mono text-xs font-semibold uppercase tracking-wider">
+                            <i data-lucide="git-pull-request" class="w-4 h-4"></i>
+                            <span>COMMUNITY & LEADERSHIP</span>
+                        </div>
+                        <h3 class="font-heading font-bold text-2xl sm:text-3xl">Open Source & Contributions</h3>
+                    </div>
+                    <div class="font-mono text-xs text-mutedDarkText bg-graphiteBorder/50 px-3.5 py-2 rounded-xl border border-graphiteBorder inline-self-start">
+                        VERIFIED WORK
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Kestra Contribution -->
+                    <div class="p-5 rounded-xl bg-graphiteBorder/30 border border-graphiteBorder/80 space-y-3 hover:border-vividOrange/50 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="font-heading font-bold text-lg text-white">Kestra Open Source</span>
+                            <span class="px-2 py-0.5 rounded bg-vividOrange/20 text-vividOrange font-mono text-[10px] uppercase font-bold">PR Merged</span>
+                        </div>
+                        <p class="text-xs text-mutedDarkText leading-relaxed">
+                            Contributed to the Kestra open-source workflow orchestration engine. Authored unit test suites that were successfully reviewed and merged into the main repository codebase.
+                        </p>
+                        <div class="font-mono text-[11px] text-gray-400 flex items-center gap-2 pt-2">
+                            <i data-lucide="check" class="w-3.5 h-3.5 text-vividOrange"></i>
+                            <span>Unit Testing · Workflow Orchestration</span>
+                        </div>
+                    </div>
+
+                    <!-- Hacktoberfest Contributor -->
+                    <div class="p-5 rounded-xl bg-graphiteBorder/30 border border-graphiteBorder/80 space-y-3 hover:border-vividOrange/50 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="font-heading font-bold text-lg text-white">Hacktoberfest Contributor</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-mono text-[10px] uppercase font-bold">Verified</span>
+                        </div>
+                        <p class="text-xs text-mutedDarkText leading-relaxed">
+                            Active open-source contributor participating in global developer challenges, creating pull requests and improving code quality across public repositories.
+                        </p>
+                        <div class="font-mono text-[11px] text-gray-400 flex items-center gap-2 pt-2">
+                            <i data-lucide="terminal" class="w-3.5 h-3.5 text-vividOrange"></i>
+                            <span>Git · Pull Requests · Code Review</span>
+                        </div>
+                    </div>
+
+                    <!-- IEEE Webmaster -->
+                    <div class="p-5 rounded-xl bg-graphiteBorder/30 border border-graphiteBorder/80 space-y-3 hover:border-vividOrange/50 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="font-heading font-bold text-lg text-white">IEEE Webmaster</span>
+                            <span class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-mono text-[10px] uppercase font-bold">Leadership</span>
+                        </div>
+                        <p class="text-xs text-mutedDarkText leading-relaxed">
+                            Served as IEEE Student Branch Webmaster, overseeing web asset maintenance, digital event technical architecture, and student chapter online updates.
+                        </p>
+                        <div class="font-mono text-[11px] text-gray-400 flex items-center gap-2 pt-2">
+                            <i data-lucide="globe" class="w-3.5 h-3.5 text-vividOrange"></i>
+                            <span>Web Maintenance · Event Systems</span>
+                        </div>
+                    </div>
+
+                    <!-- DS & Analytics Club -->
+                    <div class="p-5 rounded-xl bg-graphiteBorder/30 border border-graphiteBorder/80 space-y-3 hover:border-vividOrange/50 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="font-heading font-bold text-lg text-white">Development Head</span>
+                            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-400 font-mono text-[10px] uppercase font-bold">Club Core</span>
+                        </div>
+                        <p class="text-xs text-mutedDarkText leading-relaxed">
+                            Lead technical development initiatives for the Data Science & Analytics Club, managing technical workshops and peer learning sessions.
+                        </p>
+                        <div class="font-mono text-[11px] text-gray-400 flex items-center gap-2 pt-2">
+                            <i data-lucide="users" class="w-3.5 h-3.5 text-vividOrange"></i>
+                            <span>Mentorship · Tech Workshops</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT CTA SECTION ================= -->
+        <section id="contact" class="scroll-mt-20">
+            <div class="bg-cardWhite border border-lightBorder rounded-2xl p-6 sm:p-10 lg:p-12 bento-card relative overflow-hidden">
+                <!-- Background Accent Circle -->
+                <div class="absolute -bottom-16 -right-16 w-64 h-64 bg-softOrange rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-3xl space-y-6 relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-softOrange text-vividOrange font-mono text-xs font-semibold">
+                        <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                        <span>GET IN TOUCH</span>
+                    </div>
+
+                    <h2 class="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-graphite tracking-tight leading-tight">
+                        Have an idea? <br class="hidden sm:inline" />
+                        Let's build something <span class="text-vividOrange">useful</span>.
+                    </h2>
+
+                    <p class="text-secondaryText text-base sm:text-lg leading-relaxed">
+                        I'm interested in software engineering opportunities, full-stack projects, software engineering internships, and tech collaborations. Reach out directly via email or connect on social platforms!
+                    </p>
+
+                    <!-- Contact Buttons & Actions -->
+                    <div class="pt-4 flex flex-wrap items-center gap-4">
+                        <button id="copy-email-btn" class="inline-flex items-center gap-2.5 bg-vividOrange hover:bg-orangeHover text-white px-6 py-3 rounded-xl font-medium text-sm transition-all shadow-md shadow-vividOrange/20 hover:shadow-lg hover:shadow-vividOrange/30">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="email-btn-text">shailygupta.dev@gmail.com</span>
+                        </button>
+
+                        <a href="https://linkedin.com/in/shaily-gupta62" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-graphite hover:bg-black text-white px-5 py-3 rounded-xl font-medium text-sm transition-all">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i>
+                            <span>LinkedIn Profile</span>
+                        </a>
+
+                        <a href="https://github.com/Shaily-62" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-bgWarm hover:bg-lightBorder text-graphite px-5 py-3 rounded-xl font-medium text-sm transition-all border border-lightBorder">
+                            <i data-lucide="github" class="w-4 h-4"></i>
+                            <span>GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-lightBorder mt-16 py-8 bg-bgWarm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-secondaryText">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-vividOrange"></span>
+                <span>Designed & built by <strong class="text-graphite font-semibold">Shaily Gupta</strong></span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#home" class="hover:text-graphite transition-colors">Back to top ↑</a>
+                <span>© 2026 Mumbai, India</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Mobile Menu Drawer Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileDrawer.classList.toggle('hidden');
+        });
+
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+            });
+        });
+
+        // 2. Interactive Email Copy to Clipboard Toast
+        const copyEmailBtn = document.getElementById('copy-email-btn');
+        const emailAddress = "shailygupta.dev@gmail.com";
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+
+        copyEmailBtn.addEventListener('click', () => {
+            // Use legacy execCommand fallback or clipboard API safely
+            const tempInput = document.createElement('input');
+            tempInput.value = emailAddress;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Trigger Toast
+            toastMessage.textContent = `Copied ${emailAddress} to clipboard!`;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        });
+
+        // 3. Skill Filter Tabs Logic
+        const filterBtns = document.querySelectorAll('.skill-tab-btn');
+        const skillCards = document.querySelectorAll('.skill-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active classes
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-graphite', 'text-white');
+                    b.classList.add('bg-cardWhite', 'text-secondaryText');
+                });
+
+                // Add active class to clicked button
+                btn.classList.remove('bg-cardWhite', 'text-secondaryText');
+                btn.classList.add('bg-graphite', 'text-white');
+
+                const filter = btn.getAttribute('data-filter');
+
+                skillCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
